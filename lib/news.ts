@@ -1,46 +1,38 @@
-import { DUMMY_NEWS } from '@/dummy-news';
+import { DUMMY_NEWS } from "@/dummy-news";
+import { query } from "./db";
 
-export function getAllNews() {
-  return DUMMY_NEWS;
+export async function getAllNews() {
+  const res = await query(`select * from news`, []);
+
+  return res.rows;
 }
 
-export function getLatestNews() {
-  return DUMMY_NEWS.slice(0, 3);
+export async function getLatestNews(limit: number) {
+  const res = await query(`select * from news limit $1`, [limit]);
+
+  return res.rows;
 }
 
-export function getAvailableNewsYears() {
-  return DUMMY_NEWS.reduce((years:any[], news) => {
-    const year:number = new Date(news.date).getFullYear();
-    if (!years.includes(year)) {
-      years.push(year);
-    }
-    return years;
-  }, []).sort((a, b) => b - a);
+export async function getAvailableNewsYears() {
+  const res = await query("select distinct to_char(\"date\"::date,'YYYY') tahun from news order by to_char(\"date\"::date,'YYYY') desc", []);
+  // await new Promise((resolve) => setTimeout( resolve, 2000));
+  return res.rows.map((el) => el.tahun);
 }
 
-export function getAvailableNewsMonths(year : string) {
-  return DUMMY_NEWS.reduce((months:any[], news) => {
-    const newsYear = new Date(news.date).getFullYear();
-    if (newsYear === +year) {
-      const month:number = new Date(news.date).getMonth();
-      if (!months.includes(month)) {
-        months.push(month + 1);
-      }
-    }
-    return months;
-  }, []).sort((a, b) => b - a);
+export async function getAvailableNewsMonths(year: string) {
+  const res = await query("select distinct trim(to_char(\"date\"::date,'month')) bulan from news where (to_char(\"date\"::date,'YYYY')) = $1 order by trim(to_char(\"date\"::date,'month')) desc", [year]);
+
+  return res.rows.map((el) => el.bulan);
 }
 
-export function getNewsForYear(year:string) {
-  return DUMMY_NEWS.filter(
-    (news) => new Date(news.date).getFullYear() === +year
-  );
+export async function getNewsForYear(year: string) {
+  const res = await query("select * from news where (to_char(\"date\"::date,'YYYY')) = $1", [year]);
+
+  return res.rows;
 }
 
-export function getNewsForYearAndMonth(year:string, month:string) {
-  return DUMMY_NEWS.filter((news) => {
-    const newsYear = new Date(news.date).getFullYear();
-    const newsMonth = new Date(news.date).getMonth() + 1;
-    return newsYear === +year && newsMonth === +month;
-  });
+export async function getNewsForYearAndMonth(year: string, month: string) {
+  const res = await query("select * from news where (to_char(\"date\"::date,'YYYY')) = $1 and (trim(to_char(\"date\"::date,'month'))) = $2", [year, month]);
+
+  return res.rows;
 }

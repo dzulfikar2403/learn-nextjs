@@ -1,16 +1,25 @@
-import Link from "next/link";
-import React from "react";
-import { DUMMY_NEWS } from "@/dummy-news";
-import Image from "next/image";
+import React, { Suspense } from "react";
 import ListCard from "@/components/ListCard";
-import { getAllNews } from "@/lib/news";
+import Loading from "@/components/Loading";
 
 const NewsPage = () => {
-  const allNews = getAllNews()
+  const ListData = async () => {
+    const res = await fetch("http://localhost:3000/api/news", { method: "GET" });
+
+    if (!res.ok) {
+      throw new Error("Failed Fetchi data");
+    }
+    const { data, message } = await res.json();
+
+    return <ListCard news={data} />;
+  };
+
   return (
     <div className="px-4">
       <h1 className="text-4xl pb-6 font-extrabold">NewsPage</h1>
-      <ListCard news={allNews}/>
+      <Suspense fallback={<Loading />}>
+        <ListData />
+      </Suspense>
     </div>
   );
 };
