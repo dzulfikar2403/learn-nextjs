@@ -14,7 +14,7 @@ export const ListFeedCard = async () => {
   
   return (
     <>
-      {rows.length > 0 && rows.map((el,i) => <Card key={i} title={el.title} image_url={el.image_url} content={el.content} />)}
+      {rows.length > 0 && rows.map((el,i) => <Card key={i} id={el.id} title={el.title} image_url={el.image_url} content={el.content} />)}
     </>
   )
 }
