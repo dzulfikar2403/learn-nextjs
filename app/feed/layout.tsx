@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import Navbar from "@/components/Navbar";
+import type { Metadata } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,14 +19,15 @@ export const metadata:Metadata = {
   description: "feedpost. i make this for learn new things of next js & learn about cloudinary"
 } 
 
-export default function RootLayout({
+export default function FeedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
-    </html>
+    <main className="w-full max-w-[800px] mx-auto">
+      <Navbar />
+      {children}
+    </main>
   );
 }
