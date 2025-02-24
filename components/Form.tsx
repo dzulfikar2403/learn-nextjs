@@ -27,7 +27,7 @@ const Form = ({ actionHandler }: { actionHandler: any }) => {
           <textarea rows={4} name="content" id="content"></textarea>
         </div>
       </div>
-      {state.errors && (
+      {state.errors.length > 0 && (
         <ul className="list-disc list-inside text-red-600 font-semibold">
           {state.errors.map((el, i) => (
             <li key={i}>{el}</li>

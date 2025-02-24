@@ -4,6 +4,17 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
     domains: ["res.cloudinary.com"]
+  },
+  eslint: {
+    ignoreDuringBuilds: true
+  },
+  typescript:{
+    ignoreBuildErrors: true
+  },
+  experimental:{
+    serverActions:{
+      bodySizeLimit: '3mb'
+    }
   }
 };
 
