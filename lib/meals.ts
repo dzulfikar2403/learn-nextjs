@@ -4,6 +4,14 @@ import xss from "xss";
 import fs from "node:fs"
 import { query } from "./db";
 
+export async function getMeals() {
+  const getMeals = await query("select * from meals", []);
+  console.log('helo');
+  
+  return getMeals.rows
+}
+
+
 export const saveMeal = async (meal:Meal) => {
   const slug = slugify(meal.title,{lower:true})
   meal.instructions = xss(meal.instructions)

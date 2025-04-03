@@ -32,6 +32,6 @@ export const postMeal = async (formData: any) => {
       } 
   
   await saveMeal(meal);
-  revalidatePath('/','layout')
+  // revalidatePath('/','layout')
   redirect("/meals");
 };

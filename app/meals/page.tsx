@@ -1,13 +1,15 @@
 import Loading from "@/components/Loading";
 import MealsGrid from "@/components/MealsGrid";
-import { query } from "@/lib/db";
+import { getMeals } from "@/lib/meals";
 import Link from "next/link";
-import React, { Suspense } from "react";
+import React, { Suspense, use } from "react";
 
-const Meals = async () => {  
-  const getMeals = await query("select * from meals", []);
-  return <MealsGrid data={getMeals.rows} />;
-};
+const Meals = async () => {
+  const data = await getMeals();
+  return(
+    <MealsGrid data={data} />
+  )
+}
 
 const MealsPage = () => {
 
